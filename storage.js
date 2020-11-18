@@ -2,7 +2,7 @@ const initQuiz = {
     // 5 or more initial questions about music
     questions: [
       {
-        question: 'Who is the most significant member of The Beach Boys?',
+        question: 'Who is the most valuable member of The Beach Boys?',
         answers: [
           'Brian Wilson',
           'Dennis Wilson',
@@ -12,7 +12,7 @@ const initQuiz = {
         ],
         correctAnswer: 'Brian Wilson',
         userAnswer: undefined,
-        quizOrder: 0
+        quizOrder: 1
       },
       {
         question: 'Who is the most pernicious member of The Beach Boys?',
@@ -25,7 +25,7 @@ const initQuiz = {
         ],
         correctAnswer: 'Mike Love',
         userAnswer: undefined,
-        quizOrder: 1
+        quizOrder: 2
       },
       {
         question: 'Who is the most prolific member of The Beatles?',
@@ -37,7 +37,7 @@ const initQuiz = {
         ],
         correctAnswer: 'Paul McCartney',
         userAnswer: undefined,
-        quizOrder: 2
+        quizOrder: 3
       },
       {
         question: 'Who is the most derided member of The Beatles?',
@@ -49,7 +49,7 @@ const initQuiz = {
         ],
         correctAnswer: 'Ringo Starr',
         userAnswer: undefined,
-        quizOrder: 3
+        quizOrder: 4
       },
       {
         question: 'The sharp 11th of a D flat major 7th chord is...',
@@ -62,7 +62,7 @@ const initQuiz = {
         ],
         correctAnswer: 'G#',
         userAnswer: undefined,
-        quizOrder: 4
+        quizOrder: 5
       },
       {
         question: 'One Lydian upper structure triad for G flat is...',
@@ -74,7 +74,7 @@ const initQuiz = {
         ],
         correctAnswer: 'B#, Eb, Ab',
         userAnswer: undefined,
-        quizOrder: 5
+        quizOrder: 6
       },
       {
         question: 'The retrograde-inversion of the tone-row 2, 5, 7, 9, 0 in fixed pitch-class could most accurately  be referred to as...',
@@ -86,7 +86,7 @@ const initQuiz = {
         ],
         correctAnswer: 'B#, Eb, Ab',
         userAnswer: undefined,
-        quizOrder: 5
+        quizOrder: 7
       },
       {
         question: 'Ives\' \'The Unanswered Question\' highlights interaction with how many main instrument groups?',
@@ -99,33 +99,33 @@ const initQuiz = {
         ],
         correctAnswer: '3',
         userAnswer: undefined,
-        quizOrder: 6
-      },
-      {
-        question: '\'Hound Dog\' was originally recorded by which of the following artists?',
-        answers: [
-          'Elvis',
-          'Big Mama Thornton',
-          'Louis Armstrong',
-          'Blind Willie Mayburne',
-          'Smiley Louis'
-        ],
-        correctAnswer: 'Big Mama Thornton',
-        userAnswer: undefined,
-        quizOrder: 7
-      },
-      {
-        question: '\'Hound Dog\' was originally recorded by which of the following artists?',
-        answers: [
-          'Elvis',
-          'Big Mama Thornton',
-          'Louis Armstrong',
-          'Blind Willie Mayburne',
-          'Smiley Louis'
-        ],
-        correctAnswer: 'Big Mama Thornton',
-        userAnswer: undefined,
         quizOrder: 8
+      },
+      {
+        question: '\'Hound Dog\' was originally recorded by which of the following artists?',
+        answers: [
+          'Elvis',
+          'Big Mama Thornton',
+          'Louis Armstrong',
+          'Blind Willie Mayburne',
+          'Smiley Louis'
+        ],
+        correctAnswer: 'Big Mama Thornton',
+        userAnswer: undefined,
+        quizOrder: 9
+      },
+      {
+        question: '\'Hound Dog\' was originally recorded by which of the following artists?',
+        answers: [
+          'Elvis',
+          'Big Mama Thornton',
+          'Louis Armstrong',
+          'Blind Willie Mayburne',
+          'Smiley Louis'
+        ],
+        correctAnswer: 'Big Mama Thornton',
+        userAnswer: undefined,
+        quizOrder: 10
       },
       {
         question: 'A Theorbo is most similar in harmonic function to a...',
@@ -138,7 +138,7 @@ const initQuiz = {
         ],
         correctAnswer: 'Bass',
         userAnswer: undefined,
-        quizOrder: 9
+        quizOrder: 11
       },
       {
         question: 'Vangelis\' sound can be recognized by heavy use of what synthesizer?',
@@ -151,7 +151,7 @@ const initQuiz = {
         ],
         correctAnswer: 'Big Mama Thornton',
         userAnswer: undefined,
-        quizOrder: 10
+        quizOrder: 12
       },
       {
         question: 'Perhaps the most recognizable sound signature of acid house is the...',
@@ -164,7 +164,7 @@ const initQuiz = {
         ],
         correctAnswer: 'Roland TB-303',
         userAnswer: undefined,
-        quizOrder: 11
+        quizOrder: 13
       },
       {
         question: 'Joni Mitchell\'s primary studio microphones are...',
@@ -176,7 +176,7 @@ const initQuiz = {
         ],
         correctAnswer: 'AKG C12 on guitar and Neumann U 67 on vocals',
         userAnswer: undefined,
-        quizOrder: 12
+        quizOrder: 14
       },
       {
         question: 'Tom Waits\' preferred vocal microphone for ballads is a...',
@@ -188,7 +188,7 @@ const initQuiz = {
         ],
         correctAnswer: 'RCA 77-DX',
         userAnswer: undefined,
-        quizOrder: 13
+        quizOrder: 15
       },
       {
         question: 'Marc Ribot played primarily out of which amp on \'Rain Dogs\'...',
@@ -200,7 +200,7 @@ const initQuiz = {
         ],
         correctAnswer: 'Fender Deluxe Reverb',
         userAnswer: undefined,
-        quizOrder: 14
+        quizOrder: 16
       },
       {
         question: 'Michael Jackson often used this microphone...',
@@ -212,13 +212,25 @@ const initQuiz = {
         ],
         correctAnswer: 'Shure SM7B',
         userAnswer: undefined,
-        quizOrder: 15
+        quizOrder: 17
       }
     ],
     quizState: 0,
     questionAmount: 5,
-    currentQuestionNumber: 0,
-    score: 0
+    currentQuestionNumber: 1,
+
+    currentQuestionText: '',
+    navigationString: '',
+    optionsString: '',
+
+    optionIndex: '',
+    optionText: '',
+
+    feedbackText: '',
+    
+    numCorrect: 0,
+    numIncorrect: 0,
+    oneChanceMode: false
   };
   
 //Save current quiz state to JSON local storage

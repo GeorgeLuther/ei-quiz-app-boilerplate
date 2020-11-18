@@ -1,3 +1,6 @@
+.hidden {
+  display: none;
+}
 main {
   border: 2px solid black;
   padding: 8px;
@@ -13,6 +16,7 @@ form, section {
 .start-div, .question-div, .feedback-div, .completion-div {
   border: 2px solid red;
   margin: 8px;
+  padding: 8px;
   display: flex;
   justify-content: space-around;
 }
@@ -22,4 +26,13 @@ h2, h3 {
 .one-chance-controls {
   flex-direction: column;
   text-align: center;
+}
+#answer-radios, .feedback {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+.option-label {
+  margin: 8px;
+  padding: 8px;
 }
