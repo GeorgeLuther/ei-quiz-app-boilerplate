@@ -37,15 +37,12 @@ let currentQuestion = {}
 // Start Screen
 function generateStartString() {
     console.log("`generateStartString` ran");
-    handleStartScreenOptions()
     return startScreen();
 }
 
 // Current Question
 function generateQuestionString() {
-  console.log("`generateQuestionString` ran");
-  handleQuestionScreen()
-  
+  console.log("`generateQuestionString` ran")
   return questionScreen()
 }
   function generateOptionsDivString(answers) {
@@ -66,12 +63,17 @@ function generateQuestionString() {
       return answerRadioEl(item)
   }
 
+// Feedback Screen
 function generateFeedbackString() {
   console.log("`generateFeedbackString` ran");
-  handleFeedbackScreen()
   return feedbackScreen()
 }
 
+// Completion Screen
+function generateCompletionString() {
+  console.log("`generateCompletionString` ran");
+  return completionScreen()
+}
 
 
 
@@ -99,14 +101,16 @@ function generateFeedbackString() {
     if (QUIZ.quizState === 0) {
       currentScreenHTMLString = generateStartString();
     } else if (QUIZ.quizState === 1) { 
-      handleOneChanceMode()
+      renderQuestionFields()
       currentScreenHTMLString = generateQuestionString(QUIZ);
+      //renders the QUIZ variables to be referenced by HTML
     } else if (QUIZ.quizState === 2) {
-      handleOneChanceMode()
+      renderFeedbackText()
       currentScreenHTMLString = generateFeedbackString(QUIZ);
     } else if (QUIZ.quizState === 3) {
+      renderCompletionText()
       currentScreenHTMLString = generateCompletionString(QUIZ);
-    } else if (QUIZ.quizState === 5) {
+    } else if (QUIZ.quizState === 4) {
       currentScreenHTMLString = generateAddString(QUIZ);
     }
     saveQuiz()
@@ -116,17 +120,7 @@ function generateFeedbackString() {
   }
   function renderQuestionFields() {
     currentQuestion = QUIZ.questions.find(question => question.quizOrder === QUIZ.currentQuestionNumber)
-    //given current question number...
-    //fill number-correct <p> DONE with ${i} STYLE
-    //fill current-question <p> DONE with ${i} STYLE
-    //fill number-incorrect <p> DONE with ${i} STYLE
-    //fill current-question-text <h2> DONE with ${i} STYLE
-        // WHY WON'T THE METHOD BELOW WORK?!
-        // $('#current-question-text').text(`${QUIZ.currentQuestionText}`)
-    //iterate and render answer <inputs>
     renderOptionsDiv()
-
-    //set QUIZ.questions[]userAnswer based on 'clicked
     QUIZ.currentQuestionText = currentQuestion.question
     console.log('`renderQuestionFields` ran, currentQuestion set')
   }
@@ -141,6 +135,28 @@ function generateFeedbackString() {
     QUIZ.optionsString = optionsDivString
     
   }
+  function renderFeedbackText() {
+    console.log(currentQuestion.userAnswer)
+    console.log(currentQuestion.correctAnswer)
+    if (currentQuestion.userAnswer === currentQuestion.correctAnswer) {
+      QUIZ.numCorrect++
+      QUIZ.score = Math.round((QUIZ.numCorrect / (QUIZ.numCorrect+QUIZ.numIncorrect))*100)
+      QUIZ.feedbackText = `Yes! ${currentQuestion.correctAnswer} is the right choice! Your current score is ${QUIZ.score}.`
+    } else {
+      QUIZ.numIncorrect++
+      QUIZ.score = Math.round((QUIZ.numCorrect / (QUIZ.numCorrect+QUIZ.numIncorrect))*100)
+      QUIZ.feedbackText = `We regret to inform you that ${currentQuestion.userAnswer} is wrong. The correct answer is ${currentQuestion.correctAnswer}. Your current score is ${QUIZ.score}.`
+    }
+  }
+  function renderCompletionText() {
+    let passed = QUIZ.score >= 66
+    passed ? QUIZ.completionHeader = "CONGRATULATIONS!!!" : "AWWW SHUCKS!!!"
+    if (passed) {
+      QUIZ.completionFeedback = 'You passed! Your cochlea are on fleek and your species is proud.'
+    } else {
+      QUIZ.completionFeedback = 'It\'s ok to fail sometimes, recognizing failure is a large part of success. Don\'t be too hard on yourself!'
+    }
+  }
   
 
 
@@ -148,22 +164,33 @@ function generateFeedbackString() {
 /********** EVENT HANDLER FUNCTIONS **********/
 
 // These functions handle events (submit, click, etc)
-
+function handleQuizApp() {
+  console.log('`handleQuizApp` ran')
 //activate handling of inputs for start screen
-function handleStartScreenOptions() {
-    console.log('`handleStartScreenOptions` ran')
-      //controls the number of questions in the quiz
-      decrementQuestionAmount()
-      incrementQuestionAmount()
-      setQuestionAmount()
-      //controls the order of questions and answers
-      toggleQuestionOrder()
-      toggleAnswerOrder()
-      //toggles one-chance mode, which affects user experience going forward
-      toggleOneChanceMode()
-      //launches into the first quiz question.
-      startQuiz()
+    //controls the number of questions in the quiz
+    decrementQuestionAmount()
+    incrementQuestionAmount()
+    setQuestionAmount()
+    //controls the order of questions and answers
+    toggleQuestionOrder()
+    toggleAnswerOrder()
+    //toggles one-chance mode, which affects user experience going forward
+    toggleOneChanceMode()
+    handleOneChanceMode()
+    //launches into the first quiz question.
+    startQuiz() 
+//activate handling of inputs for question screen
+    //handles user answer selection
+    handleOptionSelected()
+    //handles clicking backward
+    handleNavBackBtn()
+//activate handling of input for feedback screen
+    handleFeedbackAccept()
+//activate handling of input for completion screen
+    handleRestartQuiz()
+    handleAddQuestion()
 }
+//START~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // AMOUNT
   function decrementQuestionAmount() {
     $('main').on('click', '#minus-questions-btn', function(e){
@@ -271,26 +298,15 @@ function handleStartScreenOptions() {
   function startQuiz() {
     $('main').on('click', '#start-btn', function(e){
       console.log('It.Has.Begun. *Crackle-ackle-ackle-ack!!!*')
-      //hide start screen
-      $('.start-screen').addClass('hidden')
       //change quiz state
       QUIZ.quizState = 1
       //re-render
       renderCurrentScreen()
     })
   }
-//activate handling of inputs for question screen
-function handleQuestionScreen() {
-  renderQuestionFields()
-    //set QUIZ.questions[]userAnswer based on 'clicked'
-  handleOptionSelected()
-  //given 'one choice' mode
-    //show/hide navigation div
-    //trigger feedback screen on radio selection OR listen to nav
-      //if nav, go back or go forward a question....
-      //currentQuestionNumber++
-  console.log("`handleQuestionScreen` ran")
-}
+
+//QUESTION~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //activate handling of inputs for question screen
   function handleOneChanceMode() {
     console.log('`handleOneChanceMode` ran')
     if (QUIZ.oneChanceMode === true) {
@@ -306,7 +322,6 @@ function handleQuestionScreen() {
       console.log(`\'handleOptionsSelected\' ran, ${chosenAnswer} selected`)
       if (QUIZ.oneChanceMode === true) {
         currentQuestion.userAnswer = chosenAnswer
-        handleFeedbackText()
         QUIZ.quizState = 2
         renderCurrentScreen()
       } else {
@@ -314,37 +329,43 @@ function handleQuestionScreen() {
       }
     })
   }
+  function handleNavBackBtn() {
+    $('main').on('click', '#back-btn', function(e){
+      console.log('REWINDING')
+      QUIZ.currentQuestionNumber--
+      QUIZ.quizState = 1
+      renderCurrentScreen()
+    })
+  }
 
-//activates handling of inputs for feedback screen
-function handleFeedbackScreen() {
-  handleFeedbackText()
-  if (QUIZ.currentQuestionNumber !== QUIZ.questionAmount) {
-      $('main').on('click', '#next', function(e){
+//FEEDBACK~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function handleFeedbackAccept() {  
+  $('main').on('click', '#next', function(e){
+    if (QUIZ.currentQuestionNumber < QUIZ.questionAmount) {
         console.log('MOVING TO NEXT QUESTION')
         QUIZ.currentQuestionNumber++
         QUIZ.quizState = 1
         renderCurrentScreen()
-      })
-  } else {
-    $('main').on('click', '#next', function(e){
-      console.log('MOVING TO COMPLETION SCREEN!')
-      QUIZ.currentQuestionNumber++
-      QUIZ.quizState = 3
-      renderCurrentScreen()
-    })
-  }
-}
-  function handleFeedbackText() {
-    console.log(currentQuestion.userAnswer)
-    console.log(currentQuestion.correctAnswer)
-    if (currentQuestion.userAnswer === currentQuestion.correctAnswer) {
-      QUIZ.feedbackText = `Yes! ${currentQuestion.correctAnswer} is the right choice!`
     } else {
-      QUIZ.feedbackText = `We regret to inform you that ${currentQuestion.userAnswer} is wrong. The correct answer is ${currentQuestion.correctAnswer}.`
+        console.log('MOVING TO COMPLETION SCREEN!')
+        QUIZ.quizState = 3
+        renderCurrentScreen()
     }
-  }
+  })
+}
+//COMPLETION~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function handleRestartQuiz() {
+  $('main').on('click', '#restart-quiz', function(e){
+    console.log('RESTARTING QUIZ')
+    localStorage.clear()
+    // QUIZ = getQuiz()
+    QUIZ.quizState = 0
+    renderCurrentScreen()
+  })
+}
+function handleAddQuestion() {
 
-//activates handling of inputs for completion screen
+}
 
 //activate handling of inputs for question adding screen
 
@@ -355,10 +376,8 @@ function handleFeedbackScreen() {
 // confirm completion screen, and new question submission form.
 function handleInit() {
   renderCurrentScreen()
-  //global buttons like back/forth
+  handleQuizApp()
 }
-// when the page loads, call `renderInit` to initalize everything.
-
 
 $(handleInit);
 

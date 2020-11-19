@@ -27,7 +27,7 @@ h2, h3 {
   flex-direction: column;
   text-align: center;
 }
-#answer-radios, .feedback {
+#answer-radios, .feedback, .completed-header {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;

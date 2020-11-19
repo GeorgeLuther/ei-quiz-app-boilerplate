@@ -3,7 +3,7 @@ function navHidden () {
 }
 function navShown () {
   return `<button type="button" id="back-btn" class="nav-btn">go back</button>
-  <button type="button" id="submit-answer" class="nav-btn">go forth</button>`
+  <button type="button" id="next" class="nav-btn">go forth</button>`
 }
 function startScreen() {
     return `<form class="start-screen">
@@ -68,7 +68,7 @@ function questionScreen() {
 }
 function answerRadioEl() {
     return `<label for=${QUIZ.optionIndex} class="option-label">${QUIZ.optionText}
-    <input type="radio" id=${QUIZ.optionIndex} class="option" name='option' value="${QUIZ.optionText}">
+    <input type="radio" id=${QUIZ.optionIndex} class="option" name='option' value="${QUIZ.optionText}" required>
     </label>`
 }
 function feedbackScreen() {
@@ -87,6 +87,27 @@ function feedbackScreen() {
 
             <div class="feedback-div navigation">
               <button type="button" id="next" class="nav-btn">next question</button>
+            </div>
+          </section>`
+}
+
+function completionScreen() {
+  return `<section>
+            <div class="completion-div progress-report">
+              <p id="number-correct">Correct: ${QUIZ.numCorrect}<p>
+              <p id="current-question">${QUIZ.currentQuestionNumber} / ${QUIZ.questionAmount}<p>
+              <p id="number-incorrect">Incorrect: ${QUIZ.numIncorrect}</p>
+            </div>
+
+            <h2 class="completed-header">${QUIZ.completionHeader}</h2>
+
+            <p class="feedback">
+              You received a final score of ${QUIZ.score}% on this quiz. ${QUIZ.completionFeedback}
+            </p>
+
+            <div class="feedback-div navigation">
+              <button type="button" id="restart-quiz" class="nav-btn">restart quiz</button>
+              <button type="button" id="add-question" class="nav-btn">add a question</button>
             </div>
           </section>`
 }

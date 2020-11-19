@@ -65,7 +65,7 @@ const initQuiz = {
         quizOrder: 5
       },
       {
-        question: 'One Lydian upper structure triad for G flat is...',
+        question: 'One Lydian upper structure triad for G flat major is...',
         answers: [
           'B#, Eb, Ab',
           'Ab, C, Eb',
@@ -215,6 +215,9 @@ const initQuiz = {
         quizOrder: 17
       }
     ],
+
+    oneChanceMode: false,
+
     quizState: 0,
     questionAmount: 5,
     currentQuestionNumber: 1,
@@ -227,10 +230,12 @@ const initQuiz = {
     optionText: '',
 
     feedbackText: '',
-    
+
     numCorrect: 0,
     numIncorrect: 0,
-    oneChanceMode: false
+    score: 0,
+    completionHeader: '',
+    completionFeedback:''
   };
   
 //Save current quiz state to JSON local storage
