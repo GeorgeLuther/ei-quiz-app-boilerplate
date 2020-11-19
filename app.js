@@ -161,6 +161,9 @@ function generateAddQuestionString() {
 
 /********** RENDER FUNCTION(S) **********/
 
+function renderQuizTitle() {
+  $('header').html(`<h1>Hone Your Tone!</h1>`);
+}
 // This function conditionally replaces the contents of the <main> tag based on the state of the store
 
 // Renders the appropriate page when the page loads.
@@ -420,6 +423,7 @@ function handleAddQuestion() {
 // that handle user input on the start form, current-question form,
 // confirm completion screen, and new question submission form.
 function handleInit() {
+  renderQuizTitle()
   renderCurrentScreen()
   handleQuizApp()
 }

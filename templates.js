@@ -17,7 +17,7 @@ function startScreen() {
       <div class="start-div total-questions-controls">
         <button type="button" id="minus-questions-btn">-</button>
         
-        <label>
+        <label class="total-question-entry-label">
             Set the number of quiz questions:
         <input type="text" placeholder="default is 5 questions" name="total-questions-entry" id="total-questions-entry"></input>
         </label>
@@ -72,7 +72,7 @@ function answerRadioEl() {
     </label>`
 }
 function feedbackScreen() {
-  return `<section>
+  return `<form>
             <div class="question-div progress-report">
               <p id="number-correct">Correct: ${QUIZ.numCorrect}<p>
               <p id="current-question">${QUIZ.currentQuestionNumber} / ${QUIZ.questionAmount}<p>
@@ -88,11 +88,11 @@ function feedbackScreen() {
             <div class="feedback-div navigation">
               <button type="button" id="next" class="nav-btn">next question</button>
             </div>
-          </section>`
+          </form>`
 }
 
 function completionScreen() {
-  return `<section>
+  return `<form>
             <div class="completion-div progress-report">
               <p id="number-correct">Correct: ${QUIZ.numCorrect}<p>
               <p id="current-question">${QUIZ.currentQuestionNumber} / ${QUIZ.questionAmount}<p>
@@ -109,16 +109,16 @@ function completionScreen() {
               <button type="button" id="restart-quiz" class="nav-btn">restart quiz</button>
               <button type="button" id="add-question" class="nav-btn">add a question</button>
             </div>
-          </section>`
+          </form>`
 }
 
 function addQuestionScreen() {
-  return `<section>
+  return `<form>
             <h2>Add a Question</h2>
             <p>The 'Add a Question' screen is currently under development... 
             In future versions users will be able to add a question with up to 6 possible answers.
             This question will then be appended to the client's localStorage and will also be 
-            sent as a form to the server or Formspree for review. 
+            sent as a form to the server or Formspree for review and global incorporation. 
           </p>
-          </section>`
+          </form>`
 }
