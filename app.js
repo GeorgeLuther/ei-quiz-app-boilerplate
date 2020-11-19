@@ -29,7 +29,62 @@ const rand=(min,max)=>{
   max=Math.floor(max) 
   return Math.floor(Math.random()*(max-min+1))+min 
 }
+
+//give each question a random quizOrder position
+let scrambleQuizOrder = () => {
+  //create an array of slots to choose from, one for every quiz question
+  let availableSlots = new Array(QUIZ.questions.length)
+  //set slots to one-based... for referencing quizOrder positions
+  availableSlots.forEach((e, i) => e=(i+1))
+  //iterate over quiz questions
+  QUIZ.questions.forEach(question => {
+    //pick random slot from those available
+    question.quizOrder = rand(1, availableSlots.length)
+    //remove slot, making it unavailable
+    availableSlots.slice(availableSlots.indexOf(question.quizOrder),1)
+  })
+}
+
+//reset quizOrder to original template order
+let resetQuizOrder = () => {
+  QUIZ.questions.forEach((question, index) => question.quizOrder = index+1)
+}
+
+//randomize the order of each question's answers array
+let scrambleOptionOrder = () => {
+  //Iterate through every question in QUIZ.questions
+  QUIZ.questions.forEach(item => {
+    //create an array of slots to choose from, one for each answer option
+    let availableSlots = new Array(item.answers.length)
+    //make each slot position the same as its index
+    availableSlots.forEach((e, i) => e=i)
+    //for every 
+    item.answers.forEach(option, index => {
+      //remove option from answer array
+      question.answers.splice(index, 1)
+      //pick random slot from those available
+      let newIndex = rand(0, availableSlots.length-1)
+      //put question in new position
+      question.answers.splice(newIndex, 0, option)
+      //remove slot, making it unavailable
+      availableSlots.slice(availableSlots.indexOf(question.quizOrder),1)
+    })
+  })
+}
+
+//reset the order of each question's answers array to match the initQuiz template
+let resetOptionOrder = () => {
+  QUIZ.questions.forEach((e, i) => {
+    //for each question, copy the corresponding answers from initQuiz
+    e.answers = initQuiz.questions[i].answers
+  })
+}
+
+//For referencing properties of the currently displayed question
 let currentQuestion = {}
+
+
+
 /********** TEMPLATE GENERATION FUNCTIONS **********/
 
 // These functions return HTML templates
@@ -75,6 +130,11 @@ function generateCompletionString() {
   return completionScreen()
 }
 
+// Add Question Screen
+function generateAddQuestionString() {
+  console.log("`generateAddQuestionString` ran");
+  return addQuestionScreen();
+}
 
 
 // Confirm Completion Screen (submit to formspree)
@@ -111,7 +171,7 @@ function generateCompletionString() {
       renderCompletionText()
       currentScreenHTMLString = generateCompletionString(QUIZ);
     } else if (QUIZ.quizState === 4) {
-      currentScreenHTMLString = generateAddString(QUIZ);
+      currentScreenHTMLString = generateAddQuestionString(QUIZ);
     }
     saveQuiz()
       // insert that HTML into the DOM
@@ -150,7 +210,7 @@ function generateCompletionString() {
   }
   function renderCompletionText() {
     let passed = QUIZ.score >= 66
-    passed ? QUIZ.completionHeader = "CONGRATULATIONS!!!" : "AWWW SHUCKS!!!"
+    passed ? QUIZ.completionHeader="CONGRATULATIONS!!!" : QUIZ.completionHeader="AWWW SHUCKS!!!"
     if (passed) {
       QUIZ.completionFeedback = 'You passed! Your cochlea are on fleek and your species is proud.'
     } else {
@@ -172,8 +232,7 @@ function handleQuizApp() {
     incrementQuestionAmount()
     setQuestionAmount()
     //controls the order of questions and answers
-    toggleQuestionOrder()
-    toggleAnswerOrder()
+    handleQuizOrder()
     //toggles one-chance mode, which affects user experience going forward
     toggleOneChanceMode()
     handleOneChanceMode()
@@ -191,7 +250,7 @@ function handleQuizApp() {
     handleAddQuestion()
 }
 //START~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// AMOUNT
+  // AMOUNT
   function decrementQuestionAmount() {
     $('main').on('click', '#minus-questions-btn', function(e){
       console.log('`decrementQuestionAmount` ran')
@@ -226,23 +285,9 @@ function handleQuizApp() {
       console.log(`questionAmount set to ${QUIZ.questionAmount}`)
     })
   }
-// ORDER
-  function toggleQuestionOrder() {
-    let scrambleQuizOrder = () => {
-      //create an array of slots to choose from
-      let availableSlots = new Array(QUIZ.questions.length)
-      //make a slot for each quizOrder position
-      availableSlots.forEach((e, i) => e=(i+1))
-      QUIZ.questions.forEach(question => {
-        //pick random slot from those available
-        question.quizOrder = rand(1, availableSlots.length)
-        //remove slot, making it unavailable
-        availableSlots.slice(availableSlots.indexOf(question.quizOrder),1)
-      })
-    }
-    let resetQuizOrder = () => {
-      QUIZ.questions.forEach((question, index) => question.quizOrder = index+1)
-    }
+  // ORDER
+  function handleQuizOrder() {
+    //Toggle question randomization
     $('main').on('change','#randomize-questions-checkbox', function(){
       if ($(this).is(':checked')) {
         scrambleQuizOrder()
@@ -252,31 +297,7 @@ function handleQuizApp() {
         console.log(`questions order normal`)
       } 
     })
-  }
-  function toggleAnswerOrder() {
-    let scrambleOptionOrder = () => {
-      QUIZ.questions.forEach(question => {
-        //create an array of slots to choose from
-        let availableSlots = new Array(question.answers.length)
-        availableSlots.forEach((e, i) => e=i)
-        question.answers.forEach(option, index => {
-          //remove option from answer array
-          question.answers.splice(index, 1)
-          //pick random slot from those available
-          let newIndex = rand(0, availableSlots.length-1)
-          //put question in new position
-          question.answers.splice(newIndex, 0, option)
-          //remove slot, making it unavailable
-          availableSlots.slice(availableSlots.indexOf(question.quizOrder),1)
-        })
-      })
-    }
-    let resetOptionOrder = () => {
-      QUIZ.questions.forEach((e, i) => {
-        //for each question, copy the corresponding answers from initQuiz
-        e.answers = initQuiz.questions[i].answers
-      })
-    }
+    //Toggle question answer array randomization
     $('main').on('change', '#randomize-answers-checkbox',function(){
       if ($(this).is(':checked')) {
         scrambleOptionOrder()
@@ -287,14 +308,14 @@ function handleQuizApp() {
       } 
     })
   }
-//EXPERIENCE
+  //EXPERIENCE
   function toggleOneChanceMode() {
     $('main').on("change", "#one-chance-checkbox", function(){
         QUIZ.oneChanceMode = !QUIZ.oneChanceMode
         console.log(`one chance mode is ${QUIZ.oneChanceMode}`)
     })
   }
-//START QUIZ!!!!
+  //START QUIZ!!!!
   function startQuiz() {
     $('main').on('click', '#start-btn', function(e){
       console.log('It.Has.Begun. *Crackle-ackle-ackle-ack!!!*')
@@ -317,7 +338,6 @@ function handleQuizApp() {
   }
   function handleOptionSelected() {
     $('main').on('click', '.option', function(e){
-      e.preventDefault()
       let chosenAnswer = $("input[name='option']:checked").val()
       console.log(`\'handleOptionsSelected\' ran, ${chosenAnswer} selected`)
       if (QUIZ.oneChanceMode === true) {
@@ -357,9 +377,20 @@ function handleFeedbackAccept() {
 function handleRestartQuiz() {
   $('main').on('click', '#restart-quiz', function(e){
     console.log('RESTARTING QUIZ')
-    localStorage.clear()
-    // QUIZ = getQuiz()
-    QUIZ.quizState = 0
+    QUIZ.quizState= 0
+    QUIZ.questionAmount= 5
+    QUIZ.currentQuestionNumber= 1
+    QUIZ.currentQuestionText= ''
+    QUIZ.navigationString= ''
+    QUIZ.optionsString= ''
+    QUIZ.optionIndex= ''
+    QUIZ.optionText= ''
+    QUIZ.feedbackText= ''
+    QUIZ.numCorrect= 0
+    QUIZ.numIncorrect= 0
+    QUIZ.score= 0
+    QUIZ.completionHeader= ''
+    QUIZ.completionFeedback=''
     renderCurrentScreen()
   })
 }

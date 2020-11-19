@@ -111,3 +111,14 @@ function completionScreen() {
             </div>
           </section>`
 }
+
+function addQuestionScreen() {
+  return `<section>
+            <h2>Add a Question</h2>
+            <p>The 'Add a Question' screen is currently under development... 
+            In future versions users will be able to add a question with up to 6 possible answers.
+            This question will then be appended to the client's localStorage and will also be 
+            sent as a form to the server or Formspree for review. 
+          </p>
+          </section>`
+}
