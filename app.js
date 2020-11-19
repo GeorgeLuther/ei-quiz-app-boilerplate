@@ -33,51 +33,65 @@ const rand=(min,max)=>{
 //give each question a random quizOrder position
 let scrambleQuizOrder = () => {
   //create an array of slots to choose from, one for every quiz question
-  let availableSlots = new Array(QUIZ.questions.length)
-  //set slots to one-based... for referencing quizOrder positions
-  availableSlots.forEach((e, i) => e=(i+1))
+  let availableSlots = []
+  //set slots in one-based... for referencing available quizOrder positions
+  for (let i=1; i<=QUIZ.questions.length; i++) {
+    availableSlots.push(i)
+  }
   //iterate over quiz questions
   QUIZ.questions.forEach(question => {
     //pick random slot from those available
-    question.quizOrder = rand(1, availableSlots.length)
+    let slotIndex = rand(0, availableSlots.length-1)
+    //set quizOrder to new randomized position
+    question.quizOrder = availableSlots[slotIndex]
     //remove slot, making it unavailable
-    availableSlots.slice(availableSlots.indexOf(question.quizOrder),1)
+    availableSlots.splice(slotIndex,1)
+    console.log(question.quizOrder)
   })
 }
 
 //reset quizOrder to original template order
 let resetQuizOrder = () => {
-  QUIZ.questions.forEach((question, index) => question.quizOrder = index+1)
+  QUIZ.questions.forEach((question, index) => {
+    question.quizOrder = index+1
+    console.log(question.quizOrder)
+  })
 }
 
 //randomize the order of each question's answers array
 let scrambleOptionOrder = () => {
+  console.log(`before ${QUIZ.questions[1].answers}`)
   //Iterate through every question in QUIZ.questions
   QUIZ.questions.forEach(item => {
-    //create an array of slots to choose from, one for each answer option
-    let availableSlots = new Array(item.answers.length)
-    //make each slot position the same as its index
-    availableSlots.forEach((e, i) => e=i)
-    //for every 
-    item.answers.forEach(option, index => {
+    //create an array of slots to choose from
+    let answerSlots = []
+    //make a slot for each index of answer option
+    for (let i=0; i<item.answers.length; i++) {
+        answerSlots.push(i)
+    }
+    //for every answer
+    item.answers.forEach((option, index) => {
+      //pick random new slot from those available
+      let newIndex = rand(0, answerSlots.length-1)
       //remove option from answer array
-      question.answers.splice(index, 1)
-      //pick random slot from those available
-      let newIndex = rand(0, availableSlots.length-1)
-      //put question in new position
-      question.answers.splice(newIndex, 0, option)
+      item.answers.splice(index, 1)
+      //put question in new answer array position
+      item.answers.splice(answerSlots[newIndex], 0, option)
       //remove slot, making it unavailable
-      availableSlots.slice(availableSlots.indexOf(question.quizOrder),1)
+      answerSlots.splice(answerSlots[newIndex], 1)
     })
   })
+  console.log(`after ${QUIZ.questions[1].answers}`)
 }
 
 //reset the order of each question's answers array to match the initQuiz template
 let resetOptionOrder = () => {
+  console.log(`before ${QUIZ.questions[1].answers}`)
   QUIZ.questions.forEach((e, i) => {
     //for each question, copy the corresponding answers from initQuiz
     e.answers = initQuiz.questions[i].answers
   })
+  console.log(`after ${QUIZ.questions[1].answers}`)
 }
 
 //For referencing properties of the currently displayed question

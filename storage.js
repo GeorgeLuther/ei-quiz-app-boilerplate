@@ -77,14 +77,14 @@ const initQuiz = {
         quizOrder: 6
       },
       {
-        question: 'The retrograde-inversion of the tone-row 2, 5, 7, 9, 0 in fixed pitch-class could most accurately  be referred to as...',
+        question: 'The tone-row 2, 5, 7, 9, 0 in fixed pitch-class could most accurately be referred to as...',
         answers: [
           'C, E, F, G, B',
           'D- pent.',
           'G major pentatonic',
           'G, A, C, D, F,',
         ],
-        correctAnswer: 'B#, Eb, Ab',
+        correctAnswer: 'D- pent.',
         userAnswer: undefined,
         quizOrder: 7
       },
@@ -115,15 +115,14 @@ const initQuiz = {
         quizOrder: 9
       },
       {
-        question: '\'Hound Dog\' was originally recorded by which of the following artists?',
+        question: 'The retrograde-inversion of P0: 0 2 t e 1 8 6 7 9 4 3 5 (the row from Stravinsky\'s \'Requiem Canticles\') is...',
         answers: [
-          'Elvis',
-          'Big Mama Thornton',
-          'Louis Armstrong',
-          'Blind Willie Mayburne',
-          'Smiley Louis'
+          '5 3 4 9 7 6 8 1 e t 2 0',
+          '0 t 2 1 e 4 6 5 3 8 9 7',
+          '7 9 8 3 5 6 4 e 1 2 t 0',
+          '5 7 6 1 3 4 2 9 e 0 8 t'
         ],
-        correctAnswer: 'Big Mama Thornton',
+        correctAnswer: '7 9 8 3 5 6 4 e 1 2 t 0',
         userAnswer: undefined,
         quizOrder: 10
       },
@@ -141,15 +140,15 @@ const initQuiz = {
         quizOrder: 11
       },
       {
-        question: 'Vangelis\' sound can be recognized by heavy use of what synthesizer?',
+        question: 'Vangelis\' sound can be recognized by extensive use of what synthesizer?',
         answers: [
-          'Yamaha CS-80',
           'Moog Minimoog',
+          'Yamaha CS-80',
           'ARP Odyssey',
           'Sequential Circuits Prophet-5',
           'Roland TB-303'
         ],
-        correctAnswer: 'Big Mama Thornton',
+        correctAnswer: 'Yamaha CS-80',
         userAnswer: undefined,
         quizOrder: 12
       },
