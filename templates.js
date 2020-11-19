@@ -9,8 +9,8 @@ function startScreen() {
     return `<form class="start-screen">
     <h2>Welcome to this quiz!</h2>
     <p>This quiz allows you to hone your understanding of esoteric or subjective musical knowledge. 
-    This is a \'closed-notes\' quiz so please remove all musical materials from your desk and screen...
-    We\'re watching you!</p>
+    This is a \'closed-notes\' quiz so please remove all musical materials from your desk and screen...</p>
+    <p>We\'re watching you!</p>
     <div class="global-quiz-controls">
       <h3>Quiz Options:</h3>
 

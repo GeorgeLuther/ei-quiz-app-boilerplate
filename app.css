@@ -1,20 +1,69 @@
 .hidden {
   display: none;
 }
+body {
+  background-image: url("images/musicpattern.png");
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+header {
+  background-color: rgb(205, 205, 241);
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+#erase-all, #restart-quiz {
+  padding: 8px;
+  background-color: brown;
+  outline: none;
+  border: 2px solid black;
+  border-radius: 8px;
+}
+#erase-all:focus {
+  background-color: brown;
+  outline: none;
+  border: 3px solid white;
+  border-radius: 8px;
+}
+#erase-all:hover {        
+  background-color: red;
+  outline:2px solid red     ;
+  border: none;
+  border-radius: 8px;
+}
+#erase-all:active {        
+  background-color: rgb(253, 253, 253);
+  outline: none;
+  border: none;
+  border-radius: 8px;
+}
+#minus-questions-btn, #plus-questions-btn, #start-btn {
+  background-color: rgb(216, 255, 177);
+  font-size: 20px;
+  border-radius: 6px;
+  max-height: 40px;
+}
 main {
   border: 2px solid black;
-  padding: 8px;
+  padding: 8px;   
+  display: flex;
+  justify-content: center;    
 }
 form, section {
   border: 2px solid blue;
+  border-radius: 8px;
+  background-color: rgb(220, 220, 238);
   padding: 8px;
   margin: 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  text-align: center;
 }
 .start-div, .question-div, .feedback-div, .completion-div {
   border: 2px solid red;
+  background-color: rgb(250, 247, 216);
+  color: rgb(0, 0, 0);
+  border-radius: 8px;
   margin: 8px;
   padding: 8px;
   display: flex;
@@ -32,7 +81,22 @@ h2, h3 {
   flex-flow: row wrap;
   justify-content: center;
 }
-.option-label {
+label {
   margin: 8px;
   padding: 8px;
+}
+*:focus{
+  border: 3px solid white;
+}
+@media all and (min-width: 800px) {
+  p {
+    font-size: 28px;
+  }
+  form {
+    max-width: 1000px;
+  }
+  #minus-questions-btn, #plus-questions-btn, #start-btn {
+    font-size: 40px;
+    max-height: 80px;
+  }
 }

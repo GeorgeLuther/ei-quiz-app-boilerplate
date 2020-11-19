@@ -234,12 +234,15 @@ const initQuiz = {
     numIncorrect: 0,
     score: 0,
     completionHeader: '',
-    completionFeedback:''
+    completionFeedback:'',
+
+    scoreHistory: []
   };
   
 //Save current quiz state to JSON local storage
 const saveQuiz = () => localStorage.setItem('quiz', JSON.stringify(QUIZ))
-
+//Reset quiz
+const eraseQuiz = () => localStorage.setItem('quiz', JSON.stringify(initQuiz))
 //Retrieve quiz state by parsing current JSON or initial quiz
 const getQuiz = () => {
     const quizJSON = localStorage.getItem('quiz')

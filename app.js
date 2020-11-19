@@ -162,7 +162,8 @@ function generateAddQuestionString() {
 /********** RENDER FUNCTION(S) **********/
 
 function renderQuizTitle() {
-  $('header').html(`<h1>Hone Your Tone!</h1>`);
+  $('header').html(`<h1>Hone Your Tone!</h1>
+  <button type="button" id="erase-all" class="nav-btn">start all over</button>`);
 }
 // This function conditionally replaces the contents of the <main> tag based on the state of the store
 
@@ -182,7 +183,7 @@ function renderQuizTitle() {
       currentScreenHTMLString = generateQuestionString(QUIZ);
       //renders the QUIZ variables to be referenced by HTML
     } else if (QUIZ.quizState === 2) {
-      renderFeedbackText()
+      renderFeedbackData()
       currentScreenHTMLString = generateFeedbackString(QUIZ);
     } else if (QUIZ.quizState === 3) {
       renderCompletionText()
@@ -212,7 +213,7 @@ function renderQuizTitle() {
     QUIZ.optionsString = optionsDivString
     
   }
-  function renderFeedbackText() {
+  function renderFeedbackData() {
     console.log(currentQuestion.userAnswer)
     console.log(currentQuestion.correctAnswer)
     if (currentQuestion.userAnswer === currentQuestion.correctAnswer) {
@@ -224,6 +225,8 @@ function renderQuizTitle() {
       QUIZ.score = Math.round((QUIZ.numCorrect / (QUIZ.numCorrect+QUIZ.numIncorrect))*100)
       QUIZ.feedbackText = `We regret to inform you that ${currentQuestion.userAnswer} is wrong. The correct answer is ${currentQuestion.correctAnswer}. Your current score is ${QUIZ.score}.`
     }
+    QUIZ.scoreHistory.push([QUIZ.numCorrect, QUIZ.numIncorrect, QUIZ.score])
+    console.log(QUIZ.scoreHistory)
   }
   function renderCompletionText() {
     let passed = QUIZ.score >= 66
@@ -235,6 +238,7 @@ function renderQuizTitle() {
     }
   }
   
+  
 
 
 
@@ -243,6 +247,8 @@ function renderQuizTitle() {
 // These functions handle events (submit, click, etc)
 function handleQuizApp() {
   console.log('`handleQuizApp` ran')
+//reset everything
+    resetAll()
 //activate handling of inputs for start screen
     //controls the number of questions in the quiz
     decrementQuestionAmount()
@@ -260,11 +266,21 @@ function handleQuizApp() {
     handleOptionSelected()
     //handles clicking backward
     handleNavBackBtn()
-//activate handling of input for feedback screen
+//activate handling of input for feedback screenQUIZ.quizState = 1 
     handleFeedbackAccept()
 //activate handling of input for completion screen
     handleRestartQuiz()
     handleAddQuestion()
+}
+function resetAll() {
+  $('header').on('click', '#erase-all', function(e){
+    // $('body').html('')
+    currentQuestion = {}
+    eraseQuiz()
+    // handleInit()
+    QUIZ.quizState = 0
+    renderCurrentScreen()
+  })
 }
 //START~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // AMOUNT
@@ -370,6 +386,13 @@ function handleQuizApp() {
     $('main').on('click', '#back-btn', function(e){
       console.log('REWINDING')
       QUIZ.currentQuestionNumber--
+      //set quiz counts back one step
+      if (QUIZ.currentQuestion > 0) {
+      QUIZ.numCorrect = QUIZ.scoreHistory[QUIZ.currentQuestionNumber-1][0]
+      QUIZ.numIncorrect = QUIZ.scoreHistory[QUIZ.currentQuestionNumber-1][1]
+      QUIZ.score = QUIZ.scoreHistory[QUIZ.currentQuestionNumber-1][2]
+      QUIZ.scoreHistory.pop()
+      }
       QUIZ.quizState = 1
       renderCurrentScreen()
     })
@@ -379,6 +402,7 @@ function handleQuizApp() {
 function handleFeedbackAccept() {  
   $('main').on('click', '#next', function(e){
     if (QUIZ.currentQuestionNumber < QUIZ.questionAmount) {
+        renderFeedbackData()
         console.log('MOVING TO NEXT QUESTION')
         QUIZ.currentQuestionNumber++
         QUIZ.quizState = 1
@@ -412,7 +436,10 @@ function handleRestartQuiz() {
   })
 }
 function handleAddQuestion() {
-
+  $('main').on('click', '#add-question', function(e){
+    QUIZ.quizState = 4
+    renderCurrentScreen()
+  })
 }
 
 //activate handling of inputs for question adding screen
